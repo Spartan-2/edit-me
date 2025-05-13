@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
     ACTIVITY_STATE,
     AppContext as AppContextType,

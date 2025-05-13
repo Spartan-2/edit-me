@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { DrawingData } from "@/types/app"
 import {
     SocketContext as SocketContextType,

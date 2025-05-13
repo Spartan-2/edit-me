@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import ChatsView from "@/components/sidebar/sidebar-views/ChatsView"
 import CopilotView from "@/components/sidebar/sidebar-views/CopilotView"
 import FilesView from "@/components/sidebar/sidebar-views/FilesView"

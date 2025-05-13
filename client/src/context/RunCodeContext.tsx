@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import axiosInstance from "@/api/pistonApi"
 import { Language, RunContext as RunContextType } from "@/types/run"
 import langMap from "lang-map"
@@ -10,6 +11,7 @@ import {
 } from "react"
 import toast from "react-hot-toast"
 import { useFileSystem } from "./FileContext"
+import { AxiosError } from "axios"
 
 const RunCodeContext = createContext<RunContextType | null>(null)
 
@@ -40,9 +42,12 @@ const RunCodeContextProvider = ({ children }: { children: ReactNode }) => {
             try {
                 const languages = await axiosInstance.get("/runtimes")
                 setSupportedLanguages(languages.data)
-            } catch (error: any) {
+            } catch (error) {
+                const axiosError = error as AxiosError<{ message: string }>
                 toast.error("Failed to fetch supported languages")
-                if (error?.response?.data) console.error(error?.response?.data)
+                if (axiosError.response?.data) {
+                    console.error(axiosError.response.data)
+                }
             }
         }
 
@@ -91,9 +96,10 @@ const RunCodeContextProvider = ({ children }: { children: ReactNode }) => {
             }
             setIsRunning(false)
             toast.dismiss()
-        } catch (error: any) {
-            console.error(error.response.data)
-            console.error(error.response.data.error)
+        } catch (error) {
+            const axiosError = error as AxiosError<{ error: string }>
+            console.error(axiosError.response?.data)
+            console.error(axiosError.response?.data?.error)
             setIsRunning(false)
             toast.dismiss()
             toast.error("Failed to run the code")
