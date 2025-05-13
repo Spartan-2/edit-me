@@ -6,7 +6,7 @@ function usePageEvents() {
 
     useEffect(() => {
         // Prevent user from leaving the page
-        const beforeUnloadHandler = (e: any) => {
+        const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
             const msg = "Changes you made may not be saved"
             return (e.returnValue = msg)
         }
@@ -19,7 +19,7 @@ function usePageEvents() {
     }, [])
 
     useEffect(() => {
-        const handleWheel = (e: any) => {
+        const handleWheel = (e: WheelEvent) => {
             if (e.ctrlKey) {
                 // Prevent default browser zoom behavior
                 e.preventDefault()
