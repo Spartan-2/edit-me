@@ -23,7 +23,7 @@ function usePageEvents() {
             if (e.ctrlKey) {
                 // Prevent default browser zoom behavior
                 e.preventDefault()
-                if (!e.target.closest(".cm-editor")) return
+                if (!e.target || !(e.target instanceof Element) || !e.target.closest(".cm-editor")) return
                 if (e.deltaY > 0) {
                     setFontSize(Math.max(fontSize - 1, 12))
                 } else {
