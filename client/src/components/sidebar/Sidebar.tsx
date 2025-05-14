@@ -28,6 +28,8 @@ function Sidebar() {
     const { isMobile } = useWindowDimensions()
     const [showTooltip, setShowTooltip] = useState(true)
 
+    // Commented out drawing mode toggle functionality
+    /*
     const changeState = () => {
         setShowTooltip(false)
         if (activityState === ACTIVITY_STATE.CODING) {
@@ -41,6 +43,7 @@ function Sidebar() {
             setIsSidebarOpen(false)
         }
     }
+    */
 
     return (
         <aside className="flex w-full md:h-full md:max-h-full md:min-h-full md:w-auto">
@@ -56,10 +59,10 @@ function Sidebar() {
                     viewName={VIEWS.FILES}
                     icon={viewIcons[VIEWS.FILES]}
                 />
-                <SidebarButton
+                {/* <SidebarButton
                     viewName={VIEWS.CHATS}
                     icon={viewIcons[VIEWS.CHATS]}
-                />
+                /> */}
                 <SidebarButton
                     viewName={VIEWS.COPILOT}
                     icon={viewIcons[VIEWS.COPILOT]}
@@ -68,16 +71,17 @@ function Sidebar() {
                     viewName={VIEWS.RUN}
                     icon={viewIcons[VIEWS.RUN]}
                 />
-                <SidebarButton
+                {/* <SidebarButton
                     viewName={VIEWS.CLIENTS}
                     icon={viewIcons[VIEWS.CLIENTS]}
-                />
-                <SidebarButton
+                /> */}
+                {/* <SidebarButton
                     viewName={VIEWS.SETTINGS}
                     icon={viewIcons[VIEWS.SETTINGS]}
-                />
+                /> */}
 
-                {/* Button to change activity state coding or drawing */}
+                {/* Drawing mode toggle button commented out */}
+                {/*
                 <div className="flex h-fit items-center justify-center">
                     <button
                         className="justify-cente flex items-center  rounded p-1.5 transition-colors duration-200 ease-in-out hover:bg-[#3D404A]"
@@ -109,6 +113,7 @@ function Sidebar() {
                         />
                     )}
                 </div>
+                */}
             </div>
             <div
                 className="absolute left-0 top-0 z-20 w-full flex-col bg-dark md:static md:min-w-[300px]"
