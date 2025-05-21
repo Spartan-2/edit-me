@@ -1,9 +1,2 @@
-module.exports = {
-    env: {
-        node: true,
-        jest: true
-    },
-    rules: {
-        'no-undef': 'off'  // Turn off no-undef for mock files
-    }
-} 
+/* Renamed from .eslintrc.mock.js to .eslintrc.mock.cjs so that it is treated as CommonJS (and not an ES module) on the runner. */
+module.exports = { env: { node: true, jest: true }, rules: { "no-undef": "off" } }; 
