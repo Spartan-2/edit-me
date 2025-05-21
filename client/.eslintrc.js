@@ -1,8 +1,9 @@
+/* Renamed from .eslintrc.js to .eslintrc.cjs so that it is treated as CommonJS (and not an ES module) on the runner. */
 module.exports = {
     root: true,
     env: {
         browser: true,
-        es2021: true,
+        es2020: true,
         node: true,
         jest: true,
     },
@@ -37,7 +38,7 @@ module.exports = {
     overrides: [
         {
             files: ["**/__mocks__/**", "**/*.mock.js", "**/*.mock.ts"],
-            extends: ["./.eslintrc.mock.js"]
+            extends: ["./.eslintrc.mock.cjs"]
         }
     ]
 } 
