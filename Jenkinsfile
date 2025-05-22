@@ -15,6 +15,7 @@ pipeline {
                 git url: 'https://github.com/Spartan-2/edit-me'  // Replace with your repo
             }
         }
+    }
 
         stage("Install Dependencies"){
             steps{
