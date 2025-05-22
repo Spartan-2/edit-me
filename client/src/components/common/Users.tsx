@@ -9,6 +9,7 @@ function Users() {
         <div className="flex min-h-[200px] flex-grow justify-center overflow-y-auto py-2">
             <div className="flex h-full w-full flex-wrap items-start gap-x-2 gap-y-6">
                 {users.map((user) => {
+                    console.log(user)
                     return <User key={user.socketId} user={user} />
                 })}
             </div>

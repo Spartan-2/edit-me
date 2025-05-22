@@ -70,3 +70,4 @@ jobs:
     - name: Build server
       working-directory: ./server
       run: npm run build || echo "No build script found" 
+      
