@@ -1,47 +1,117 @@
+// pipeline {
+//     agent any
+
+//     environment {
+//         FRONTEND_DIR = 'client'
+//         BACKEND_DIR = 'server'
+//         DOCKER_REGISTRY = 'your-dockerhub-username' // Replace with your DockerHub username
+//         FRONTEND_IMAGE = 'mern-frontend'
+//         BACKEND_IMAGE = 'mern-backend'
+//     }
+
+//     stages {
+//         stage('Checkout Code') {
+//             steps {
+//                 git url: 'https://github.com/Spartan-2/edit-me'
+//             }
+//         }
+
+//         stage('Install & Build Frontend') {
+//             steps {
+//                 dir("${env.FRONTEND_DIR}") {
+//                     sh 'npm install'
+//                     // Use `npm run build` if it's a production build step
+//                     sh 'npm run dev'
+//                 }
+//             }
+//         }
+
+//         stage('Install & Start Backend') {
+//             steps {
+//                 dir("${env.BACKEND_DIR}") {
+//                     sh 'npm install'
+//                     sh 'npm run dev'
+//                 }
+//             }
+//         }
+//     }
+
+//     post {
+//         success {
+//             echo '✅ Build and startup succeeded!'
+//         }
+//         failure {
+//             echo '❌ Build failed. Check the console output for errors.'
+//         }
+//     }
+// }
+
+
+
+
+
 pipeline {
+    // Telling Jenkins to run the pipeline on any available agent.
     agent any
 
+    // Setting environment variables for the build.
     environment {
-        FRONTEND_DIR = 'client'
-        BACKEND_DIR = 'server'
-        DOCKER_REGISTRY = 'your-dockerhub-username' // Replace with your DockerHub username
-        FRONTEND_IMAGE = 'mern-frontend'
-        BACKEND_IMAGE = 'mern-backend'
+        MONGODB_URI = credentials('mongodb-uri')
+        TOKEN_KEY = credentials('token-key')
+        EMAIL = credentials('email')
+        PASSWORD = credentials('password')
     }
 
+    // This is the pipeline. It is a series of stages that Jenkins will run.
     stages {
-        stage('Checkout Code') {
+        // This state is telling Jenkins to checkout the source code from the source control management system.
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/Spartan-2/edit-me'
+                checkout scm
             }
         }
 
-        stage('Install & Build Frontend') {
+        // This stage is telling Jenkins to run the tests in the client directory.
+        stage('Client Tests') {
             steps {
-                dir("${env.FRONTEND_DIR}") {
+                dir('client') {
                     sh 'npm install'
-                    // Use `npm run build` if it's a production build step
+                    sh 'npm test'
+                }
+            }
+        }
+
+        // This stage is telling Jenkins to run the tests in the server directory.
+        stage('Server Tests') {
+            steps {
+                dir('server') {
+                    sh 'npm install'
+                    // sh 'export MONGODB_URI=$MONGODB_URI'
+                    // sh 'export TOKEN_KEY=$TOKEN_KEY'
+                    // sh 'export EMAIL=$EMAIL'
+                    // sh 'export PASSWORD=$PASSWORD'
                     sh 'npm run dev'
                 }
             }
         }
 
-        stage('Install & Start Backend') {
-            steps {
-                dir("${env.BACKEND_DIR}") {
-                    sh 'npm install'
-                    sh 'npm run dev'
-                }
-            }
-        }
-    }
+        // This stage is telling Jenkins to build the images for the client and server.
+        // stage('Build Images') {
+        //     steps {
+        //         sh 'docker build -t rakeshpotnuru/productivity-app:client-latest client'
+        //         sh 'docker build -t rakeshpotnuru/productivity-app:server-latest server'
+        //     }
+        // }
 
-    post {
-        success {
-            echo '✅ Build and startup succeeded!'
-        }
-        failure {
-            echo '❌ Build failed. Check the console output for errors.'
-        }
+        // // This stage is telling Jenkins to push the images to DockerHub.
+        // stage('Push Images to DockerHub') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+        //             sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+        //             sh 'docker push rakeshpotnuru/productivity-app:client-latest'
+        //             sh 'docker push rakeshpotnuru/productivity-app:server-latest'
+        //         }
+        //     }
+        // }
     }
 }
