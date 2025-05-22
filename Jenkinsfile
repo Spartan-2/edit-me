@@ -4,7 +4,7 @@ pipeline {
     environment {
         FRONTEND_DIR = 'client'
         BACKEND_DIR = 'server'
-        DOCKER_REGISTRY = 'your-dockerhub-username'  // Change this
+        DOCKER_REGISTRY = 'your-dockerhub-username' // Replace with your DockerHub username
         FRONTEND_IMAGE = 'mern-frontend'
         BACKEND_IMAGE = 'mern-backend'
     }
@@ -12,14 +12,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/Spartan-2/edit-me'  // Replace with your repo
-            }
-        }
-    
-
-        stage("Install Dependencies"){
-            steps{
-                sh 'npm install'
+                git url: 'https://github.com/Spartan-2/edit-me'
             }
         }
 
@@ -27,12 +20,13 @@ pipeline {
             steps {
                 dir("${env.FRONTEND_DIR}") {
                     sh 'npm install'
+                    // Use `npm run build` if it's a production build step
                     sh 'npm run dev'
                 }
             }
         }
 
-        stage('Install & Test Backend') {
+        stage('Install & Start Backend') {
             steps {
                 dir("${env.BACKEND_DIR}") {
                     sh 'npm install'
@@ -41,12 +35,13 @@ pipeline {
             }
         }
     }
+
     post {
         success {
-            echo 'Build and Dockerization succeeded!'
+            echo '✅ Build and startup succeeded!'
         }
         failure {
-            echo 'Build failed. Check logs for errors.'
+            echo '❌ Build failed. Check the console output for errors.'
         }
     }
 }
