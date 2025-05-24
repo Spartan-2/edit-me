@@ -52,7 +52,12 @@
 
 pipeline {
     // Telling Jenkins to run the pipeline on any available agent.
-    agent any
+    agent {
+        docker {
+            image 'node:18'  // or any version you want
+                args '-v /tmp:/tmp'
+                }
+    }
 
     // Setting environment variables for the build.
     // environment {
