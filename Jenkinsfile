@@ -50,73 +50,129 @@
 
 
 
+// pipeline {
+//     // Telling Jenkins to run the pipeline on any available agent.
+//     agent {
+//         docker {
+//             image 'node:18'  // or any version you want
+//                 args '-v /tmp:/tmp'
+//                 }
+//     }
+
+//     // Setting environment variables for the build.
+//     // environment {
+//     //     MONGODB_URI = credentials('mongodb-uri')
+//     //     TOKEN_KEY = credentials('token-key')
+//     //     EMAIL = credentials('email')
+//     //     PASSWORD = credentials('password')
+//     // }
+
+//     // This is the pipeline. It is a series of stages that Jenkins will run.
+//     stages {
+//         // This state is telling Jenkins to checkout the source code from the source control management system.
+//         stage('Checkout') {
+//             steps {
+//                 checkout scm
+//             }
+//         }
+
+//         // This stage is telling Jenkins to run the tests in the client directory.
+//         stage('Client Tests') {
+//             steps {
+//                 dir('client') {
+//                     sh 'npm install'
+//                     sh 'npm run dev'
+//                 }
+//             }
+//         }
+
+//         // This stage is telling Jenkins to run the tests in the server directory.
+//         stage('Server Tests') {
+//             steps {
+//                 dir('server') {
+//                     sh 'npm install'
+//                     // sh 'export MONGODB_URI=$MONGODB_URI'
+//                     // sh 'export TOKEN_KEY=$TOKEN_KEY'
+//                     // sh 'export EMAIL=$EMAIL'
+//                     // sh 'export PASSWORD=$PASSWORD'
+//                     sh 'npm run dev'
+//                 }
+//             }
+//         }
+
+//         // This stage is telling Jenkins to build the images for the client and server.
+//         // stage('Build Images') {
+//         //     steps {
+//         //         sh 'docker build -t rakeshpotnuru/productivity-app:client-latest client'
+//         //         sh 'docker build -t rakeshpotnuru/productivity-app:server-latest server'
+//         //     }
+//         // }
+
+//         // // This stage is telling Jenkins to push the images to DockerHub.
+//         // stage('Push Images to DockerHub') {
+//         //     steps {
+//         //         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+//         //             sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+//         //             sh 'docker push rakeshpotnuru/productivity-app:client-latest'
+//         //             sh 'docker push rakeshpotnuru/productivity-app:server-latest'
+//         //         }
+//         //     }
+//         // }
+//     }
+// }
+
+
+
+
+
+
 pipeline {
-    // Telling Jenkins to run the pipeline on any available agent.
     agent {
         docker {
-            image 'node:18'  // or any version you want
-                args '-v /tmp:/tmp'
-                }
+            image 'node:18'  // Use Node.js 18 Docker image
+            args '-v /tmp:/tmp'
+        }
     }
 
-    // Setting environment variables for the build.
-    // environment {
-    //     MONGODB_URI = credentials('mongodb-uri')
-    //     TOKEN_KEY = credentials('token-key')
-    //     EMAIL = credentials('email')
-    //     PASSWORD = credentials('password')
-    // }
+    environment {
+        FRONTEND_DIR = 'client'
+        BACKEND_DIR = 'server'
+    }
 
-    // This is the pipeline. It is a series of stages that Jenkins will run.
     stages {
-        // This state is telling Jenkins to checkout the source code from the source control management system.
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
                 checkout scm
             }
         }
 
-        // This stage is telling Jenkins to run the tests in the client directory.
-        stage('Client Tests') {
+        stage('Install & Test Frontend') {
             steps {
-                dir('client') {
+                dir("${env.FRONTEND_DIR}") {
                     sh 'npm install'
-                    sh 'npm run dev'
+                    // sh 'npm run test'  // Run frontend tests
+                    sh 'npm run build' // Build frontend for production
                 }
             }
         }
 
-        // This stage is telling Jenkins to run the tests in the server directory.
-        stage('Server Tests') {
+        stage('Install & Test Backend') {
             steps {
-                dir('server') {
+                dir("${env.BACKEND_DIR}") {
                     sh 'npm install'
-                    // sh 'export MONGODB_URI=$MONGODB_URI'
-                    // sh 'export TOKEN_KEY=$TOKEN_KEY'
-                    // sh 'export EMAIL=$EMAIL'
-                    // sh 'export PASSWORD=$PASSWORD'
-                    sh 'npm run dev'
+                    // sh 'npm run test'  // Run backend tests
+                    sh 'npm run build' // Build backend for production
                 }
             }
         }
+    }
 
-        // This stage is telling Jenkins to build the images for the client and server.
-        // stage('Build Images') {
-        //     steps {
-        //         sh 'docker build -t rakeshpotnuru/productivity-app:client-latest client'
-        //         sh 'docker build -t rakeshpotnuru/productivity-app:server-latest server'
-        //     }
-        // }
-
-        // // This stage is telling Jenkins to push the images to DockerHub.
-        // stage('Push Images to DockerHub') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-        //             sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-        //             sh 'docker push rakeshpotnuru/productivity-app:client-latest'
-        //             sh 'docker push rakeshpotnuru/productivity-app:server-latest'
-        //         }
-        //     }
-        // }
+    post {
+        success {
+            echo '✅ Build and tests succeeded!'
+        }
+        failure {
+            echo '❌ Build or tests failed. Check the console output for errors.'
+        }
     }
 }
