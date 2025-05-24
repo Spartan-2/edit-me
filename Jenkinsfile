@@ -18,14 +18,14 @@ pipeline {
             }
         }
 
-        stage('Install & Build Frontend') {
-            steps {
-                dir("${env.FRONTEND_DIR}") {
-                    sh 'npm install'
-                    sh 'npm run dev' // Build frontend for production
-                }
-            }
-        }
+        // stage('Install & Build Frontend') {
+        //     steps {
+        //         dir("${env.FRONTEND_DIR}") {
+        //             sh 'npm install'
+        //             sh 'npm run dev' // Build frontend for production
+        //         }
+        //     }
+        // }
 
         stage('Install & Build Backend') {
             steps {
