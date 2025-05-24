@@ -151,7 +151,7 @@ pipeline {
                 dir("${env.FRONTEND_DIR}") {
                     sh 'npm install'
                     // sh 'npm run test'  // Run frontend tests
-                    sh 'npm run build' // Build frontend for production
+                    sh 'npm run dev' // Build frontend for production
                 }
             }
         }
@@ -161,7 +161,7 @@ pipeline {
                 dir("${env.BACKEND_DIR}") {
                     sh 'npm install'
                     // sh 'npm run test'  // Run backend tests
-                    sh 'npm run build' // Build backend for production
+                    sh 'npm run dev' // Build backend for production
                 }
             }
         }
