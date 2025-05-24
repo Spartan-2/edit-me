@@ -55,12 +55,12 @@ pipeline {
     agent any
 
     // Setting environment variables for the build.
-    environment {
-        MONGODB_URI = credentials('mongodb-uri')
-        TOKEN_KEY = credentials('token-key')
-        EMAIL = credentials('email')
-        PASSWORD = credentials('password')
-    }
+    // environment {
+    //     MONGODB_URI = credentials('mongodb-uri')
+    //     TOKEN_KEY = credentials('token-key')
+    //     EMAIL = credentials('email')
+    //     PASSWORD = credentials('password')
+    // }
 
     // This is the pipeline. It is a series of stages that Jenkins will run.
     stages {
