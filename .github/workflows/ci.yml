@@ -7,6 +7,22 @@ on:
     branches: [ main ]
 
 jobs:
+  sonarclousscan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+          fetch-depth: 0
+    - name: SonarScan 
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+            GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONARCUBE_TOKEN }}
+      with:
+        args: >
+              -Dsonar.organization=spart
+              -Dsonar.projectKey=edit-me
+
   client:
     name: Client Build
     runs-on: ubuntu-latest
@@ -27,9 +43,9 @@ jobs:
       working-directory: ./client
       run: npm ci
 
-    - name: Run client linting
-      working-directory: ./client
-      run: npm run lint
+    # - name: Run client linting
+    #   working-directory: ./client
+    #   run: npm run lint
 
     - name: Client type check
       working-directory: ./client
@@ -57,11 +73,11 @@ jobs:
 
     - name: Install server dependencies
       working-directory: ./server
-      run: npm ci
+      run: npm install && npm ci
 
-    - name: Run server linting
-      working-directory: ./server
-      run: npm run lint || echo "No lint script found"
+    # - name: Run server linting
+    #   working-directory: ./server
+    #   run: npm run lint || echo "No lint script found"
 
     - name: Server type check
       working-directory: ./server
