@@ -21,7 +21,7 @@ jobs:
       with:
         args: >
               -Dsonar.organization=spart
-              # -Dsonar.projectKey=spart
+              -Dsonar.projectKey=Spartan-2_edit-me
 
   client:
     name: Client Build
