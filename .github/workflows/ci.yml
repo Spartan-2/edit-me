@@ -20,8 +20,8 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONARCUBE_TOKEN }}
       with:
         args: >
-              -Dsonar.organization=spart
-              -Dsonar.projectKey=edit-me
+              -Dsonar.organization=Spartan-2
+              -Dsonar.projectKey=spart
 
   client:
     name: Client Build
